@@ -1,0 +1,42 @@
+1) Blocked and Allowed Traffic
+
+spl id="l9x2ka" index=soc_project | stats count by action 
+
+Purpose:
+Used to compare allowed and blocked network traffic.
+
+---
+
+2) Detected Malicious IPs
+
+spl id="t6m4qp" index=soc_project | lookup malicious_ips.csv ip AS src_ip OUTPUT ip AS matched_ip | where isnotnull(matched_ip) | table _time src_ip action status 
+
+Purpose:
+Used to display detected malicious IP events with timestamps and actions.
+
+---
+
+3) Top Malicious IP Addresses
+
+spl id="p3v8ns" index=soc_project | lookup malicious_ips.csv ip AS src_ip OUTPUT ip AS matched_ip | where isnotnull(matched_ip) | stats count by src_ip 
+
+Purpose:
+Used to identify the most frequently detected malicious IP addresses.
+
+---
+
+4) Detected Malicious Attempts Count
+
+spl id="z7k1md" index=soc_project | lookup malicious_ips.csv ip AS src_ip OUTPUT ip AS matched_ip | where isnotnull(matched_ip) | stats count 
+
+Purpose:
+Used to calculate the total number of malicious attempts.
+
+---
+
+5) Network Activity Over Time
+
+spl id="w2n5fr" index=soc_project | timechart count by action 
+
+Purpose:
+Used to visualize network activity over time and monitor traffic behavior.
